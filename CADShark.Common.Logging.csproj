@@ -54,6 +54,23 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="packages\NLog.5.2.0\.signature.p7s" />
+    <None Include="packages\NLog.5.2.0\NLog.5.2.0.nupkg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages\NLog.5.2.0\lib\net35\NLog.dll" />
+    <Content Include="packages\NLog.5.2.0\lib\net35\NLog.xml" />
+    <Content Include="packages\NLog.5.2.0\lib\net45\NLog.dll" />
+    <Content Include="packages\NLog.5.2.0\lib\net45\NLog.xml" />
+    <Content Include="packages\NLog.5.2.0\lib\net46\NLog.dll" />
+    <Content Include="packages\NLog.5.2.0\lib\net46\NLog.xml" />
+    <Content Include="packages\NLog.5.2.0\lib\netstandard1.3\NLog.dll" />
+    <Content Include="packages\NLog.5.2.0\lib\netstandard1.3\NLog.xml" />
+    <Content Include="packages\NLog.5.2.0\lib\netstandard1.5\NLog.dll" />
+    <Content Include="packages\NLog.5.2.0\lib\netstandard1.5\NLog.xml" />
+    <Content Include="packages\NLog.5.2.0\lib\netstandard2.0\NLog.dll" />
+    <Content Include="packages\NLog.5.2.0\lib\netstandard2.0\NLog.xml" />
+    <Content Include="packages\NLog.5.2.0\N.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
