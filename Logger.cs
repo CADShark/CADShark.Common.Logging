@@ -2,10 +2,10 @@
 
 namespace CADShark.Common.Logging
 {
-    public class Logger
+    public class CadLogger
     {
         private static readonly ILogger Loggers = LogManager.GetCurrentClassLogger();
-        static Logger()
+        static CadLogger()
         {
             LoggingConfiguration.Configure();
         }
