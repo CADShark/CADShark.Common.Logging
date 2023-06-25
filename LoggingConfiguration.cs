@@ -9,20 +9,19 @@ namespace CADShark.Common.Logging
         {
             var config = new NLog.Config.LoggingConfiguration();
 
-            // Створюємо таргет для логування в консоль
             var consoleTarget = new ColoredConsoleTarget();
             config.AddTarget("console", consoleTarget);
 
-            // Створюємо таргет для логування в файл
-            var fileTarget = new FileTarget();
-            fileTarget.FileName = "${basedir}/logs/log.txt";
+            var fileTarget = new FileTarget
+            {
+                FileName = "${basedir}/logs/log.txt",
+                CreateDirs = true
+            };
             config.AddTarget("file", fileTarget);
 
-            // Правила таргетування від Debug до Trace
-            config.AddRule(LogLevel.Debug, LogLevel.Trace, consoleTarget);
-            config.AddRule(LogLevel.Debug, LogLevel.Trace, fileTarget);
+            config.AddRule(LogLevel.Debug, LogLevel.Fatal, consoleTarget);
+            config.AddRule(LogLevel.Debug, LogLevel.Fatal, fileTarget);
 
-            // Активуємо налаштування
             LogManager.Configuration = config;
         }
     }

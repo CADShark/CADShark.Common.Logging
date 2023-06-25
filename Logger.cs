@@ -5,7 +5,7 @@ namespace CADShark.Common.Logging
     public class Logger
     {
         private static readonly ILogger Loggers = LogManager.GetCurrentClassLogger();
-        public Logger()
+        static Logger()
         {
             LoggingConfiguration.Configure();
         }
@@ -13,23 +13,23 @@ namespace CADShark.Common.Logging
         {
             Loggers.Debug(message);
         }
-        public void Info(string message)
+        public static void Info(string message)
         {
             Loggers.Info(message);
         }
-        public void Warning(string message)
+        public static void Warning(string message)
         {
             Loggers.Warn(message);
         }
-        public void Error(string message)
+        public static void Error(string message)
         {
             Loggers.Error(message);
         }
-        public void Fatal(string message)
+        public static void Fatal(string message)
         {
             Loggers.Fatal(message);
         }
-        public void Trace(string message)
+        public static void Trace(string message)
         {
             Loggers.Trace(message);
         }
