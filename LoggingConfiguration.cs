@@ -1,5 +1,6 @@
 ﻿using NLog;
 using NLog.Targets;
+using System.Text;
 
 namespace CADShark.Common.Logging
 {
@@ -14,13 +15,15 @@ namespace CADShark.Common.Logging
 
             var fileTarget = new FileTarget
             {
-                FileName = "${basedir}/logs/log.txt",
-                CreateDirs = true
+                FileName = "${specialfolder:folder=ApplicationData}/CADShark/OpenCAD/Log.txt",
+                Encoding = Encoding.UTF8,
+                CreateDirs = true,
+                Layout = "${longdate}\t${level:uppercase=true}\t${message}"
             };
-            config.AddTarget("file", fileTarget);
 
-            config.AddRule(LogLevel.Debug, LogLevel.Fatal, consoleTarget);
-            config.AddRule(LogLevel.Debug, LogLevel.Fatal, fileTarget);
+            config.AddTarget("file", fileTarget);
+            config.AddRule(LogLevel.Trace, LogLevel.Fatal, consoleTarget);
+            config.AddRule(LogLevel.Trace, LogLevel.Fatal, fileTarget);
 
             LogManager.Configuration = config;
         }

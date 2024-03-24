@@ -1,37 +1,66 @@
 ﻿using NLog;
+using System;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using static CADShark.Common.Logging.LoggingConfiguration;
+using static NLog.LogManager;
 
 namespace CADShark.Common.Logging
 {
     public class CadLogger
     {
-        private static readonly ILogger Loggers = LogManager.GetCurrentClassLogger();
-        static CadLogger()
+        private static ILogger _loggers;
+
+        private CadLogger(string obj0, string obj1)
         {
-            LoggingConfiguration.Configure();
+            Configure();
+            _loggers = GetCurrentClassLogger();
         }
-        public static void Debug(string message)
+
+        public static CadLogger GetLogger(string className)
         {
-            Loggers.Debug(message);
+            var fullName = Assembly.GetCallingAssembly().FullName;
+            return new CadLogger(className, fullName);
         }
-        public static void Info(string message)
+
+        public void Debug(string message)
         {
-            Loggers.Info(message);
+            _loggers.Debug(message);
         }
-        public static void Warning(string message)
+
+        public void Info(string message)
         {
-            Loggers.Warn(message);
+            _loggers.Info(message);
         }
-        public static void Error(string message)
+
+        public void Info(string obg1, string message)
         {
-            Loggers.Error(message);
+            _loggers.Info("{0}\t{1}", obg1, message);
         }
-        public static void Fatal(string message)
+
+        public void Warning(string message)
         {
-            Loggers.Fatal(message);
+            _loggers.Warn(message);
         }
-        public static void Trace(string message)
+
+        public void Error(string message)
         {
-            Loggers.Trace(message);
+            _loggers.Error(message);
+        }
+
+        public void Error(string message, Exception exception, [CallerMemberName] string methodName = "")
+        {
+            _loggers.Error(message);
+        }
+
+        public void Fatal(string message)
+        {
+            _loggers.Fatal(message);
+        }
+
+        public void Trace(string message)
+        {
+            _loggers.Trace(message);
         }
     }
 }
