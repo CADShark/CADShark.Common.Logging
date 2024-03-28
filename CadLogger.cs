@@ -50,7 +50,7 @@ namespace CADShark.Common.Logging
 
         public void Error(string message, Exception exception, [CallerMemberName] string methodName = "")
         {
-            _loggers.Error(message);
+            _loggers.Error("{0}\t{1}\t{2}", message, exception.Message, methodName);
         }
 
         public void Fatal(string message)
