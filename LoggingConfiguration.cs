@@ -15,7 +15,7 @@ namespace CADShark.Common.Logging
 
             var fileTarget = new FileTarget
             {
-                FileName = "${specialfolder:folder=ApplicationData}/CADShark/OpenCAD/Log.txt",
+                FileName = "${specialfolder:folder=ApplicationData}/CADShark/Log.txt",
                 Encoding = Encoding.UTF8,
                 CreateDirs = true,
                 Layout = "${longdate}\t${level:uppercase=true}\t${message}"
