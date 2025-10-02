@@ -1,66 +1,48 @@
-﻿using NLog;
+﻿using Serilog;
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using static CADShark.Common.Logging.LoggingConfiguration;
-using static NLog.LogManager;
 
 namespace CADShark.Common.Logging
 {
     public class CadLogger
     {
-        private static ILogger _loggers;
+        private readonly ILogger _logger;
 
-        private CadLogger(string obj0, string obj1)
+        private CadLogger(string className, string assemblyName)
         {
-            Configure();
-            _loggers = GetCurrentClassLogger();
+            LoggingConfiguration.Configure();
+            _logger = Log.ForContext("ClassName", className)
+                         .ForContext("AssemblyName", assemblyName);
         }
 
-        public static CadLogger GetLogger(string className)
+        public static CadLogger GetLogger<T>()
         {
-            var fullName = Assembly.GetCallingAssembly().FullName;
-            return new CadLogger(className, fullName);
+            var fullName = Assembly.GetCallingAssembly().GetName().Name;
+            return new CadLogger(typeof(T).Name, fullName);
         }
+        
+        public void Debug(string message) => _logger.Debug(message);
 
-        public void Debug(string message)
-        {
-            _loggers.Debug(message);
-        }
+        public void Info(string message) => _logger.Information(message);
 
-        public void Info(string message)
-        {
-            _loggers.Info(message);
-        }
+        public void Info(string obj1, string message) =>
+            _logger.Information("{Obj1}\t{Message}", obj1, message);
 
-        public void Info(string obg1, string message)
-        {
-            _loggers.Info("{0}\t{1}", obg1, message);
-        }
+        public void Warning(string message) => _logger.Warning(message);
 
-        public void Warning(string message)
-        {
-            _loggers.Warn(message);
-        }
+        public void Warning(string message, params object[] propertyValues) => _logger.Warning(message, propertyValues);
 
-        public void Error(string message)
-        {
-            _loggers.Error(message);
-        }
+        public void Error(string message) => _logger.Error(message);
 
-        public void Error(string message, Exception exception, [CallerMemberName] string methodName = "")
-        {
-            _loggers.Error("{0}\t{1}\t{2}", message, exception.Message, methodName);
-        }
+        public void Error(string message, params object[] propertyValues) => _logger.Error(message, propertyValues);
 
-        public void Fatal(string message)
-        {
-            _loggers.Fatal(message);
-        }
 
-        public void Trace(string message)
-        {
-            _loggers.Trace(message);
-        }
+        public void Error(string message, Exception exception, [CallerMemberName] string methodName = "") =>
+            _logger.Error(exception, "{Message}\t{MethodName}", message, methodName);
+
+        public void Fatal(string message) => _logger.Fatal(message);
+
+        public void Trace(string message) => _logger.Verbose(message);
     }
 }
