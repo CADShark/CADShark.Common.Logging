@@ -1,31 +1,43 @@
-﻿using NLog;
-using NLog.Targets;
-using System.Text;
+﻿using Serilog;
+using System;
+using System.IO;
+using Serilog.Events;
 
 namespace CADShark.Common.Logging
 {
-    internal class LoggingConfiguration
+    internal static class LoggingConfiguration
     {
         internal static void Configure()
         {
-            var config = new NLog.Config.LoggingConfiguration();
+            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var logDir = Path.Combine(appData, "CADShark");
 
-            var consoleTarget = new ColoredConsoleTarget();
-            config.AddTarget("console", consoleTarget);
+            if (!Directory.Exists(logDir))
+                Directory.CreateDirectory(logDir);
 
-            var fileTarget = new FileTarget
-            {
-                FileName = "${specialfolder:folder=ApplicationData}/CADShark/Log.txt",
-                Encoding = Encoding.UTF8,
-                CreateDirs = true,
-                Layout = "${longdate}\t${level:uppercase=true}\t${message}"
-            };
+            var logFile = Path.Combine(logDir, "Log.txt");
 
-            config.AddTarget("file", fileTarget);
-            config.AddRule(LogLevel.Trace, LogLevel.Fatal, consoleTarget);
-            config.AddRule(LogLevel.Trace, LogLevel.Fatal, fileTarget);
+#if DEBUG
+            const LogEventLevel minimumLevel = LogEventLevel.Debug;
+#else
+            const LogEventLevel minimumLevel = LogEventLevel.Information;
+#endif
 
-            LogManager.Configuration = config;
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Is(minimumLevel)
+                .WriteTo.Console(
+                    outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"
+                )
+                .WriteTo.File(
+                    logFile,
+                    rollingInterval: RollingInterval.Infinite,
+                    fileSizeLimitBytes: 10 * 1024 * 1024,     // 10 MB
+                    rollOnFileSizeLimit: true,
+                    retainedFileCountLimit: 1,
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff}\t{Level:u3}\t{Message:lj}{NewLine}{Exception}",
+                    shared: true
+                )
+                .CreateLogger();
         }
     }
 }
