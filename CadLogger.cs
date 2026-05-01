@@ -1,7 +1,7 @@
-﻿using Serilog;
-using System;
+﻿using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Serilog;
 
 namespace CADShark.Common.Logging
 {
